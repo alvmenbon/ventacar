@@ -26,11 +26,11 @@ include("db.php");
 
     }
 
-   // $_SESSION['message']= 'Coche añadido correctamente';
-   // $_SESSION['message_type']='success';
+    $_SESSION['message']= 'Coche añadido correctamente';
+    $_SESSION['message_type']='success';
 
 
-   // header("Location:  index.php"); /*REDIRECCIONA */
+   header("Location:  index.php"); /*REDIRECCIONA */
 
 
 ?>

@@ -1,9 +1,6 @@
 <?php 
 
-/*	if(isset($_GET["slt-marcas"])){
-       $sltmarcas = $_GET["slt-marcas"];
-       print_r ("select marcas is => ".$sltmarcas);
-  */ 
+
   
   $sltmarcas = $_POST['id'];
 $curl = curl_init();
@@ -22,8 +19,7 @@ curl_setopt_array($curl, [
         "Accept-Language: en-GB",
 		"Content-Type: application/json",
 		"Accept: application/json"
-		//"x-rapidapi-host: car-data.p.rapidapi.com",
-		//"x-rapidapi-key: f34e7472c0msh0ef4ea00122c901p103be2jsne7cb168decf6"
+
 	],
 ]);
 

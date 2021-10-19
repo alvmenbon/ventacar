@@ -1,40 +1,94 @@
 
-
+<?php include ("db.php") ?>
+<!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta de coches</title>
+    <!--boostrap 4-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     <!--FONT AWESOME 5-->
+     <script src="https://kit.fontawesome.com/65fc940331.js" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
-<div class="page-header">
-    <h1>MARCAS COCHES</h1>
-</div>
-<form>
+<nav class="navbar-dark bg-dark">
+    <div class="container">
+        <a href="index.php" class="navbar-brand">Venta de coches</a>
+    </div>
+</nav>
 
-<div class="row">
-    <div class="col-xs-6">
-        <div class="form-group">
-            <label>MARCAS</label>
+<div class="container p-4">
+<div class="col-md-4">
+            <?php if(isset($_SESSION['message'])) { ?>                                      
+                <div class="alert alert-<?= $_SESSION['message_type'];?> alert-dismissible fade show" role="alert">
+                <?= $_SESSION['message']?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+           <?php session_unset(); } ?>
+            <div class="card card-body">
+                <form action="save_car.php" method="POST">
+                    <div class="form-group">
+                    <label>MARCAS</label>
 			<p>
             <select id ="slt-marcas" name="slt-marcas" class="form-control" onchange="getModelos()">
             </select>
-			
-        </div>        
-    </div>
-	
-	<div class="row">
-    <div class="col-xs-6">
-        <div class="form-group">
-            <label>MODELOS</label>
+                    </div>
+                    <div class="form-group">
+                    <label>MODELOS</label>
 			<p>
             <select id= "slt-modelos" name="slt-modelos" class="form-control" onchange="">
             </select>
-        </div>        
-    </div>
-	 <input type="button" class="btn btn-success btn-block" name="save-car" value="Añadir coche" onclick="insertDatos()">
+                    </div>
+                   
+                    <input type="submit" class="btn btn-success btn-block" name="save-car" value="Añadir coche" onclick="insertDatos()">
+                </form>
+            </div>
+        </div>
+<div class="col-md-8">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Modelo</th>
+              <!--  <th>Año</th>
+                <th>Matricula</th>
+                <th>Precio</th>-->
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+          
+          
+            <?php 
+          
+          $result_car = $db->query("SELECT * FROM cars");
 
+          while($row = $result_car->fetchArray()){?>
+            <tr>
+                <td><?php echo $row['brand'] ?></td>
+                <td><?php echo $row['model'] ?></td>
 
-</form>	
+                <td>
+                    <a href="edit.php?id=<?php echo $row['id']?>" class="btn btn-secondary">
+                        <i class="fab fa-bitcoin"></i>
+                    </a>
+                    <a href="delete_car.php?id=<?php echo $row['id']?>" class="btn btn-danger">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
 
+          <?php } ?>
+        </tbody>
+    </table>
+</div>
+</div>
 <script>
 function getMarcas(){
 	var marcas = $("#slt-marcas");
