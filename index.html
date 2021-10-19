@@ -1,0 +1,156 @@
+
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="page-header">
+    <h1>MARCAS COCHES</h1>
+</div>
+<form>
+
+<div class="row">
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label>MARCAS</label>
+			<p>
+            <select id ="slt-marcas" name="slt-marcas" class="form-control" onchange="getModelos()">
+            </select>
+			
+        </div>        
+    </div>
+	
+	<div class="row">
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label>MODELOS</label>
+			<p>
+            <select id= "slt-modelos" name="slt-modelos" class="form-control" onchange="">
+            </select>
+        </div>        
+    </div>
+	 <input type="button" class="btn btn-success btn-block" name="save-car" value="Añadir coche" onclick="insertDatos()">
+
+
+</form>	
+
+<script>
+function getMarcas(){
+	var marcas = $("#slt-marcas");
+  $.ajax({
+                data: { id : marcas.val() },
+                url:   'marcas.php',
+                type:  'POST',
+                dataType: 'json',
+                beforeSend: function () 
+                {
+                   // marcas.prop('disabled', true);
+                },
+                success:  function (r) 
+                {
+                    marcas.prop('disabled', false);
+
+                    // Limpiamos el select
+                    marcas.find('option').remove();
+
+                    $(r).each(function(i, v){ // indice, valor
+					    if (v.id <= 300) {
+                        marcas.append('<option value="' + v.id + '">' + v.name + '</option>');
+						}
+                    })
+
+                    marcas.prop('disabled', false);
+                },
+                error: function()
+                {
+                    alert('Ocurrio un error en el servidor ..');
+                    marcas.prop('disabled', false);
+                }
+            });
+}
+
+
+function getModelos(){
+	var marcas = $("#slt-marcas");
+	var modelos = $("#slt-modelos");
+  $.ajax({
+                data: { id : marcas.val() },
+                url:   'modelos.php',
+                type:  'POST',
+                dataType: 'json',
+                beforeSend: function () 
+                {
+                   // marcas.prop('disabled', true);
+                },
+                success:  function (r) 
+                {
+                    modelos.prop('disabled', false);
+
+                    // Limpiamos el select
+                    modelos.find('option').remove();
+
+                    $(r).each(function(i, v){ // indice, valor
+					    if (v.vehicleType == 'C' && v.name != 'Others'){
+                        modelos.append('<option value="' + v.id + '">' + $( "#slt-marcas option:selected" ).text() + " " +v.name + '</option>');
+			}
+                    })
+
+                    modelos.prop('disabled', false);
+                },
+                error: function()
+                {
+                    alert('Ocurrio un error en el servidor ..');
+                    marcas.prop('disabled', false);
+                }
+            });
+}
+
+function insertDatos(){
+    
+   	var marcas = $("#slt-marcas option:selected");
+	var modelos = $("#slt-modelos option:selected");
+
+  $.ajax({
+                data: { id: marcas.val(),
+                    make : marcas.text(),
+                    modelId : modelos.val(),
+                    model : modelos.text()
+},
+                url:   'save_car.php',
+                type:  'POST',
+                dataType: 'json',
+                beforeSend: function ()
+                {
+                  // alert(marcas.val());
+                },
+                success:  function (r)
+                {
+// mensajito todo ok
+                },
+                error: function(s)
+                {
+                  //  alert(s.responseText);
+                }
+            });
+}
+
+
+</script>
+<script>
+
+$(document).ready(function(){
+    // Bloqueamos el SELECT de los cursos
+    $("#slt-modelos").prop('disabled', true);
+	getMarcas();
+
+    // Hacemos la lógica que cuando nuestro SELECT cambia de valor haga algo
+    
+})
+
+</script>
+
+
+
+</body>
+</html>
