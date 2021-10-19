@@ -21,8 +21,7 @@ include("db.php");
     else{
 
         echo  $json = json_encode($result, true);
-        $_SESSION['message'] = 'Coche borrado';
-        $_SESSION['message_type'] = 'danger';
+        
         header("Location: index.php");
     }
 
